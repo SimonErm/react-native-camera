@@ -513,12 +513,14 @@ static NSDictionary *defaultFaceDetectorOptions = nil;
         self.session.sessionPreset = AVCaptureSessionPresetPhoto;
         
         AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+        [self.session beginConfiguration];
         if ([self.session canAddOutput:stillImageOutput]) {
             stillImageOutput.outputSettings = @{AVVideoCodecKey : AVVideoCodecJPEG};
             [self.session addOutput:stillImageOutput];
             [stillImageOutput setHighResolutionStillImageOutputEnabled:YES];
             self.stillImageOutput = stillImageOutput;
         }
+        [self.session commitConfiguration];
 
 #if __has_include(<GoogleMobileVision/GoogleMobileVision.h>)
         [_faceDetectorManager maybeStartFaceDetectionOnSession:_session withPreviewLayer:_previewLayer];
@@ -725,6 +727,7 @@ static NSDictionary *defaultFaceDetectorOptions = nil;
 
 - (void)_setupOrDisableMetadataOutput
 {
+    [self.session beginConfiguration];
     if ([self isReadingBarCodes] && (_metadataOutput == nil || ![self.session.outputs containsObject:_metadataOutput])) {
         AVCaptureMetadataOutput *metadataOutput = [[AVCaptureMetadataOutput alloc] init];
         if ([self.session canAddOutput:metadataOutput]) {
@@ -736,6 +739,7 @@ static NSDictionary *defaultFaceDetectorOptions = nil;
         [self.session removeOutput:_metadataOutput];
         _metadataOutput = nil;
     }
+    [self.session commitConfiguration];
 }
 
 - (void)_updateMetadataObjectsToRecognize
@@ -794,10 +798,12 @@ static NSDictionary *defaultFaceDetectorOptions = nil;
 {
     AVCaptureMovieFileOutput *movieFileOutput = [[AVCaptureMovieFileOutput alloc] init];
 
+    [self.session beginConfiguration];
     if ([self.session canAddOutput:movieFileOutput]) {
         [self.session addOutput:movieFileOutput];
         self.movieFileOutput = movieFileOutput;
     }
+    [self.session commitConfiguration];
 }
 
 - (void)cleanupMovieFileCapture
