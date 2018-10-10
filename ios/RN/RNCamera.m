@@ -551,7 +551,9 @@ static NSDictionary *defaultFaceDetectorOptions = nil;
         }
 
         NSURL *outputURL = [[NSURL alloc] initFileURLWithPath:path];
-        [self.movieFileOutput startRecordingToOutputFileURL:outputURL recordingDelegate:self];
+        if([self.session isRunning]){
+            [self.movieFileOutput startRecordingToOutputFileURL:outputURL recordingDelegate:self];
+        }
         self.videoRecordedResolve = resolve;
         self.videoRecordedReject = reject;
     });
