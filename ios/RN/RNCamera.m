@@ -141,7 +141,7 @@ static NSDictionary *defaultFaceDetectorOptions = nil;
 {
     dispatch_async(self.sessionQueue, ^{
         [self initializeCaptureSessionInput];
-        if (!self.session.isRunning) {
+        if (![self.session isRunning]) {
             [self startSession];
         }
     });
