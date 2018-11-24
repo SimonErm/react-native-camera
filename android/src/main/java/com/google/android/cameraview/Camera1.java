@@ -402,6 +402,10 @@ class Camera1 extends CameraViewImpl implements MediaRecorder.OnInfoListener,
 
     void takePictureInternal(final ReadableMap options) {
         if (!isPictureCaptureInProgress.getAndSet(true)) {
+            if(options.hasKey("orientation")&&options.getInt("orientation")!=-1){
+                mCameraParameters.setRotation(calcCameraRotation(options.getInt("orientation")));
+                mCamera.setParameters(mCameraParameters);
+            }
             mCamera.takePicture(null, null, null, new Camera.PictureCallback() {
                 @Override
                 public void onPictureTaken(byte[] data, Camera camera) {
