@@ -1043,7 +1043,12 @@ class Camera2 extends CameraViewImpl implements MediaRecorder.OnInfoListener, Me
                             CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
                     break;
             }
-            captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOutputRotation());
+            if (mCaptureCallback.getOptions().hasKey("orientation")
+                    && mCaptureCallback.getOptions().getInt("orientation")!=-1) {
+                captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, mCaptureCallback.getOptions().getInt("orientation"));
+            }else{
+                captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOutputRotation());
+            }
             captureRequestBuilder.set(CaptureRequest.SCALER_CROP_REGION, mPreviewRequestBuilder.get(CaptureRequest.SCALER_CROP_REGION));
             // Stop preview and capture a still picture.
             mCaptureSession.stopRepeating();
