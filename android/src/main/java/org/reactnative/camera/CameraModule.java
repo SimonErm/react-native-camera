@@ -85,6 +85,7 @@ public class CameraModule extends ReactContextBaseJavaModule {
         put("WhiteBalance", getWhiteBalanceConstants());
         put("VideoQuality", getVideoQualityConstants());
         put("BarCodeType", getBarCodeConstants());
+        put("Orientation",getOrientationConstants());
         put("FaceDetection", Collections.unmodifiableMap(new HashMap<String, Object>() {
           {
             put("Mode", getFaceDetectionModeConstants());
@@ -126,7 +127,17 @@ public class CameraModule extends ReactContextBaseJavaModule {
           }
         }));
       }
-
+        private Map<String, Object> getOrientationConstants() {
+            return Collections.unmodifiableMap(new HashMap<String, Object>() {
+                {
+                    put("auto",Constants.ORIENTATION_AUTO);
+                    put("portrait",Constants.ORIENTATION_PORTRAIT);
+                    put("landscapeLeft", Constants.ORIENTATION_LANDSCAPE_LEFT);
+                    put("portraitUpsideDown", Constants.ORIENTATION_PORTRAIT_UPSIDE_DOWN);
+                    put("landscapeRight", Constants.ORIENTATION_LANDSCAPE_RIGHT);
+                }
+            });
+        }
       private Map<String, Object> getTypeConstants() {
         return Collections.unmodifiableMap(new HashMap<String, Object>() {
           {
